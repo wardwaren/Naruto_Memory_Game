@@ -324,7 +324,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 101840823}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 395025635}
+        m_TargetAssemblyTypeName: MenuScript, Assembly-CSharp
+        m_MethodName: returnToMain
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &101840823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,7 +522,7 @@ GameObject:
   - component: {fileID: 240000130}
   - component: {fileID: 240000129}
   m_Layer: 5
-  m_Name: Top Panel
+  m_Name: Bottom Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -851,6 +863,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 1003155215}
+  homeButton: {fileID: 101840822}
+  homeButtons:
+  - {fileID: 1971771724}
+  - {fileID: 1177044294}
+  - {fileID: 1309768229}
+  levelButtons:
+  - {fileID: 600499173}
+  - {fileID: 853008759}
+  - {fileID: 757965754}
+  - {fileID: 1149681896}
 --- !u!1 &600499171
 GameObject:
   m_ObjectHideFlags: 0
