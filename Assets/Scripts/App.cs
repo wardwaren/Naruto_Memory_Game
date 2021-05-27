@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class App : MonoBehaviour
 {
+    [SerializeField] private Animator _animator;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -11,6 +13,11 @@ public class App : MonoBehaviour
     }
 
 
+    public void onPlay()
+    {
+        _animator.SetTrigger("ButtonClick");
+    }
+    
     public void onClose()
     {
         Application.Quit();
