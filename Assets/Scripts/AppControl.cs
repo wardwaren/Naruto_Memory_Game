@@ -31,9 +31,17 @@ public class AppControl : MonoBehaviour
         gameManager = mainLevel.GetComponent<GameManager>();
         mainLevel.GetComponent<GameManager>().setTimeText(timeText);
         mainLevel.GetComponent<GameManager>().setRecordText(recordText);
-        winButton.onClick.AddListener(delegate { mainLevel.GetComponent<GameManager>().winGame(); });
+        winButton.onClick.AddListener(delegate {mainLevel.GetComponent<GameManager>().winGame();});
     }
 
+    public void onRestartClick()
+    {
+        Destroy(gameManager.gameObject);
+        winButton.onClick.RemoveListener(delegate {mainLevel.GetComponent<GameManager>().winGame();});
+        GameSettings.resume = false;
+        InitLevel(level);
+    }
+    
     public void onSettingsClick(){
         settingsPanel.SetActive(true);
         gameManager.pauseGame(true);
