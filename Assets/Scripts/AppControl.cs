@@ -36,17 +36,18 @@ public class AppControl : MonoBehaviour
 
     public void onSettingsClick(){
         settingsPanel.SetActive(true);
-        gameManager.setTimer(false);
+        gameManager.pauseGame(true);
     }
 
     public void onResumeClick()
     {
         settingsPanel.SetActive(false);
-        gameManager.setTimer(true);
+        gameManager.pauseGame(false);
     }
 
     public void onMainMenuClick()
     {
+        gameManager.saveGameState();
         SceneManager.LoadScene(0);
     }
    

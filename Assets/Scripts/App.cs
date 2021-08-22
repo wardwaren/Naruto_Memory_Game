@@ -5,9 +5,4 @@ using UnityEngine.SceneManagement;
 
 public class App : MonoBehaviour
 {
-    void Start()
-    {
-        Screen.orientation = ScreenOrientation.Portrait;
-    }
-
 }

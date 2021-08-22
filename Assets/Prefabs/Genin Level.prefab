@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 436588944760650567}
   - component: {fileID: 436588944760650568}
   m_Layer: 0
-  m_Name: ImagePart12
+  m_Name: ImagePart8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6e3eabb5bdcdc43b762775fd7fe968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 11
+  ID: 7
   sprite: {fileID: 436588944760650567}
 --- !u!1 &436588945120636497
 GameObject:
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 436588945196984602}
   - component: {fileID: 436588945196984603}
   m_Layer: 0
-  m_Name: ImagePart13
+  m_Name: ImagePart9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -340,7 +340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6e3eabb5bdcdc43b762775fd7fe968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 12
+  ID: 8
   sprite: {fileID: 436588945196984602}
 --- !u!1 &436588945229809759
 GameObject:
@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 436588945511603731}
   - component: {fileID: 436588945511603732}
   m_Layer: 0
-  m_Name: ImagePart7
+  m_Name: ImagePart5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6e3eabb5bdcdc43b762775fd7fe968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 6
+  ID: 4
   sprite: {fileID: 436588945511603731}
 --- !u!1 &436588945774890737
 GameObject:
@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 436588945774890254}
   - component: {fileID: 436588945774890255}
   m_Layer: 0
-  m_Name: ImagePart8
+  m_Name: ImagePart6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -664,7 +664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6e3eabb5bdcdc43b762775fd7fe968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 7
+  ID: 5
   sprite: {fileID: 436588945774890254}
 --- !u!1 &436588945994360383
 GameObject:
@@ -678,7 +678,7 @@ GameObject:
   - component: {fileID: 436588945994360380}
   - component: {fileID: 436588945994360381}
   m_Layer: 0
-  m_Name: ImagePart6
+  m_Name: ImagePart4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -761,7 +761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6e3eabb5bdcdc43b762775fd7fe968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 5
+  ID: 3
   sprite: {fileID: 436588945994360380}
 --- !u!1 &436588946052361248
 GameObject:
@@ -905,7 +905,7 @@ GameObject:
   - component: {fileID: 436588946325953849}
   - component: {fileID: 436588946325953850}
   m_Layer: 0
-  m_Name: ImagePart11
+  m_Name: ImagePart7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -988,7 +988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6e3eabb5bdcdc43b762775fd7fe968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 10
+  ID: 6
   sprite: {fileID: 436588946325953849}
 --- !u!1 &436588946447029490
 GameObject:

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,11 @@ public class MenuScript : MonoBehaviour
 
     [SerializeField] private List<Button> levelButtons;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        Screen.orientation = ScreenOrientation.Portrait;
+    }
 
     public void onPlay()
     {
@@ -39,6 +45,8 @@ public class MenuScript : MonoBehaviour
     public void selectLevel(int x)
     {
         GameSettings.difficulty = x;
+        GameSettings.resume = false;
+        
         SceneManager.LoadScene(1);
     }
 
@@ -51,7 +59,8 @@ public class MenuScript : MonoBehaviour
     
     public void resumeLevel()
     {
-        
+        GameSettings.resume = true;
+        SceneManager.LoadScene(1);
     }
 
     public void onClose()

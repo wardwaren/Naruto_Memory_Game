@@ -15,8 +15,11 @@ public class GameManager : MonoBehaviour
 {
    
     [SerializeField] private List<GameObject> rows;
-    
+    [SerializeField] private float SWIPE_THRESHOLD = 15f;
+
     private List<List<ImagePart>> gameImages;
+    private List<List<int>> gameImageIds;
+    
     private int SCREEN_WIDTH;
     
     private List<ImagePart> initialOrder;
@@ -24,17 +27,20 @@ public class GameManager : MonoBehaviour
 
     private TextMeshProUGUI timerText;
     private TextMeshProUGUI recordText;
-    private Stopwatch gameTime;
-    private bool levelCompleted = false;
-
+    private CustomStopwatch gameTime;
+    private StorageManager storageManager;
+    
+    private bool gameOnPause = false;
+    
     private int emptyFieldX = 4;
     private int emptyFieldY = 4;
     
     private Vector2 fingerDown;
     private Vector2 fingerUp;
     
-    private String RECORD_KEY = GameSettings.difficulty + "record";
-    public float SWIPE_THRESHOLD = 15f;
+    private readonly String RECORD_KEY = GameSettings.difficulty + "record";
+    private readonly String RESUME_KEY = GameSettings.difficulty + "resume";
+    private readonly String LEVEL_DATA_KEY = GameSettings.difficulty + "levelData";
     
     private enum swipeDirections{left, right, up, down}
     
@@ -42,10 +48,11 @@ public class GameManager : MonoBehaviour
     {
         initializeGameImages();
         
-        gameTime = new Stopwatch();
         initialOrder = new List<ImagePart>();
         initialPositions = new List<Vector3>();
-
+        storageManager = new StorageManager();
+        gameTime = new CustomStopwatch(TimeSpan.Zero);
+        
         if (PlayerPrefs.HasKey(RECORD_KEY))
         {
             TimeSpan gameRecord = TimeSpan.FromMilliseconds(PlayerPrefs.GetInt(RECORD_KEY));
@@ -59,22 +66,38 @@ public class GameManager : MonoBehaviour
         SCREEN_WIDTH = Screen.width;
         
         createInitialLists();
-        ShuffleImages();
+        
+        if (!GameSettings.resume)
+        {
+            ShuffleImages();
+        }
+        else
+        {
+            restoreGameState();
+            gameTime = new CustomStopwatch(TimeSpan.FromMilliseconds(PlayerPrefs.GetInt(RESUME_KEY)));
+        }    
+        
         gameTime.Start();
     }
     
     private void initializeGameImages()
     {
         gameImages = new List<List<ImagePart>>();
+        gameImageIds = new List<List<int>>();
         
         foreach (var row in rows)
         {
             List<ImagePart> imageList = new List<ImagePart>();
+            List<int> imageListIds = new List<int>();
+            
             foreach (var gamePart in row.GetComponentsInChildren<ImagePart>())
             {
                 imageList.Add(gamePart);
+                imageListIds.Add(gamePart.id);
             }
+            
             gameImages.Add(imageList);
+            gameImageIds.Add(imageListIds);
         }
     }
     
@@ -84,7 +107,7 @@ public class GameManager : MonoBehaviour
         {
             foreach (var image in imageRow)
             {
-                initialOrder.Add(new ImagePart(image.id, image.Sprite));
+                initialOrder.Add(image);
                 initialPositions.Add(image.transform.position);
             }
         }
@@ -109,7 +132,8 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < gameImages[i].Count; j++)
             {
                 gameImages[i][j] = flatList[i * gameImages.Count + j];
-
+                gameImageIds[i][j] = gameImages[i][j].id;
+                
                 if (gameImages[i][j].Sprite.sprite == null)
                 {
                     emptyFieldX = i;
@@ -121,6 +145,18 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private void restoreFromIDs()
+    {
+        for (int i = 0; i < gameImages.Count; i++)
+        {
+            for (int j = 0; j < gameImages[i].Count; j++)
+            {
+                gameImages[i][j] = initialOrder[gameImageIds[i][j]];
+            }
+        }
+
+    }
+    
     private void UpdatePositions()
     {
         for (int i = 0; i < gameImages.Count; i++)
@@ -151,28 +187,30 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        TimeSpan timeTaken = gameTime.Elapsed;
+        TimeSpan timeTaken = TimeSpan.FromMilliseconds(gameTime.ElapsedMilliseconds);
         timerText.text = timeTaken.ToString(@"mm\:ss");
 
-        foreach (Touch touch in Input.touches)
+        if (!gameOnPause)
         {
-            if (touch.phase == TouchPhase.Began)
+            foreach (Touch touch in Input.touches)
             {
-                fingerUp = touch.position;
-                fingerDown = touch.position;
-            }
+                if (touch.phase == TouchPhase.Began)
+                {
+                    fingerUp = touch.position;
+                    fingerDown = touch.position;
+                }
             
-            if (touch.phase == TouchPhase.Ended)
-            {
-                fingerDown = touch.position;
-                checkSwipe();
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    fingerDown = touch.position;
+                    checkSwipe();
+                }
             }
         }
     }
     
     void checkSwipe()
     {
-        Debug.Log(verticalMove() + " " + horizontalValMove());
         if (verticalMove() > SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
         {
             if (fingerDown.y - fingerUp.y > 0)
@@ -259,23 +297,46 @@ public class GameManager : MonoBehaviour
         UpdatePositions();
     }
 
-    public void setTimer(bool mode)
+    public void pauseGame(bool pause)
     {
-        if(mode)
-            gameTime.Start();
-        else
+        gameOnPause = pause;
+        
+        if(pause)
             gameTime.Stop();
+        else
+            gameTime.Start();
     }
 
     public void winGame()
     {
         LevelCompleted();
     }
+
+    public void saveGameState()
+    {
+        for (int i = 0; i < gameImages.Count; i++)
+        {
+            for (int j = 0; j < gameImages[i].Count; j++)
+            {
+                gameImageIds[i][j] = gameImages[i][j].id;
+            }
+        }
+
+        storageManager.SaveData(gameImageIds, LEVEL_DATA_KEY);
+        
+        PlayerPrefs.SetInt(RESUME_KEY, (int) gameTime.ElapsedMilliseconds);
+    }
+
+    private void restoreGameState()
+    {
+        gameImageIds = (List<List<int>>) storageManager.LoadData(LEVEL_DATA_KEY);
+        restoreFromIDs();
+        UpdatePositions();
+    }
     
     private void LevelCompleted()
     {
-        gameTime.Stop();
-
+        pauseGame(true);
         
         if(PlayerPrefs.GetInt(RECORD_KEY) > (int) gameTime.ElapsedMilliseconds)
             PlayerPrefs.SetInt(RECORD_KEY, (int) gameTime.ElapsedMilliseconds);
@@ -289,5 +350,10 @@ public class GameManager : MonoBehaviour
     public void setRecordText(TextMeshProUGUI recordText)
     {
         this.recordText = recordText;
+    }
+
+    private void OnApplicationQuit()
+    {
+        saveGameState();
     }
 }
