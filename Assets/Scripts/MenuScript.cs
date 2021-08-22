@@ -39,7 +39,6 @@ public class MenuScript : MonoBehaviour
     public void selectLevel(int x)
     {
         GameSettings.difficulty = x;
-        GameSettings.level = 1;
         SceneManager.LoadScene(1);
     }
 
