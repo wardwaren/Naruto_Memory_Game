@@ -20,8 +20,6 @@ public class GameManager : MonoBehaviour
     private List<List<ImagePart>> gameImages;
     private List<List<int>> gameImageIds;
     
-    private int SCREEN_WIDTH;
-    
     private List<ImagePart> initialOrder;
     private List<Vector3> initialPositions;
 
@@ -62,9 +60,7 @@ public class GameManager : MonoBehaviour
         {
             recordText.gameObject.SetActive(false);
         }
-            
-        SCREEN_WIDTH = Screen.width;
-        
+
         createInitialLists();
         
         if (!GameSettings.resume)

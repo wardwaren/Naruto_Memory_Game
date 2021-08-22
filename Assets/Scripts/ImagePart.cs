@@ -18,5 +18,5 @@ public class ImagePart : MonoBehaviour
         this.ID = ID;
         this.sprite = sprite;
     }
-    
+
 }

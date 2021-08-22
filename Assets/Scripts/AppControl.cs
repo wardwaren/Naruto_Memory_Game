@@ -11,12 +11,12 @@ public class AppControl : MonoBehaviour
     [SerializeField] private Transform gameLevelAnchor;
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private TextMeshProUGUI recordText;
-    [SerializeField] private GameObject settingsPanel;
     [SerializeField] private Button winButton;
 
     private GameManager gameManager;
    
     private int level;
+    private Vector3 scale;
     private GameObject mainLevel;
     
     private void Start()
@@ -42,25 +42,9 @@ public class AppControl : MonoBehaviour
         InitLevel(level);
     }
     
-    public void onSettingsClick(){
-        settingsPanel.SetActive(true);
-        gameManager.pauseGame(true);
-    }
-
-    public void onResumeClick()
-    {
-        settingsPanel.SetActive(false);
-        gameManager.pauseGame(false);
-    }
-
     public void onMainMenuClick()
     {
         gameManager.saveGameState();
         SceneManager.LoadScene(0);
-    }
-   
-    public void onQuitClick()
-    {
-        Application.Quit();
     }
 }
