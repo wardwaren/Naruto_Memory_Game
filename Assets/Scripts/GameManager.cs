@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI recordText;
     private CustomStopwatch gameTime;
     private StorageManager storageManager;
+    private Animator victoryScreenAnimator;
     
     private bool gameOnPause = false;
     
@@ -56,11 +57,7 @@ public class GameManager : MonoBehaviour
             TimeSpan gameRecord = TimeSpan.FromMilliseconds(PlayerPrefs.GetInt(RECORD_KEY));
             recordText.text = gameRecord.ToString(@"mm\:ss") + " /";
         }
-        else
-        {
-            recordText.gameObject.SetActive(false);
-        }
-
+        
         createInitialLists();
         
         if (!GameSettings.resume)
@@ -139,6 +136,8 @@ public class GameManager : MonoBehaviour
         }
         UpdatePositions();
         
+        if(IsOrdered())
+            ShuffleImages();
     }
 
     private void restoreFromIDs()
@@ -184,6 +183,14 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         TimeSpan timeTaken = TimeSpan.FromMilliseconds(gameTime.ElapsedMilliseconds);
+     
+        if (PlayerPrefs.HasKey(RECORD_KEY))
+        {
+            TimeSpan gameRecord = TimeSpan.FromMilliseconds(PlayerPrefs.GetInt(RECORD_KEY));
+            if(gameRecord < timeTaken)
+                recordText.text = timeTaken.ToString(@"mm\:ss") + " /";
+        }
+        
         timerText.text = timeTaken.ToString(@"mm\:ss");
 
         if (!gameOnPause)
@@ -334,6 +341,8 @@ public class GameManager : MonoBehaviour
     {
         pauseGame(true);
         
+        victoryScreenAnimator.SetTrigger("GameWin");
+        
         if(PlayerPrefs.GetInt(RECORD_KEY) > (int) gameTime.ElapsedMilliseconds)
             PlayerPrefs.SetInt(RECORD_KEY, (int) gameTime.ElapsedMilliseconds);
     }
@@ -351,5 +360,15 @@ public class GameManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         saveGameState();
+    }
+
+    public void SetScreenAnimator(Animator animator)
+    {
+        victoryScreenAnimator = animator;
+    }
+    
+    public bool onPause()
+    {
+        return gameOnPause;
     }
 }

@@ -12,7 +12,8 @@ public class AppControl : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private TextMeshProUGUI recordText;
     [SerializeField] private Button winButton;
-
+    [SerializeField] private Animator victoryScreenAnimator;
+    
     private GameManager gameManager;
    
     private int level;
@@ -29,13 +30,18 @@ public class AppControl : MonoBehaviour
     {
         mainLevel = Instantiate(gameLevels[lvl], gameLevelAnchor);
         gameManager = mainLevel.GetComponent<GameManager>();
-        mainLevel.GetComponent<GameManager>().setTimeText(timeText);
-        mainLevel.GetComponent<GameManager>().setRecordText(recordText);
+        gameManager.SetScreenAnimator(victoryScreenAnimator);
+        gameManager.setTimeText(timeText);
+        gameManager.setRecordText(recordText);
         winButton.onClick.AddListener(delegate {mainLevel.GetComponent<GameManager>().winGame();});
     }
 
     public void onRestartClick()
     {
+        if (gameManager.onPause())
+        {
+            victoryScreenAnimator.SetTrigger("RestartGame");
+        }
         Destroy(gameManager.gameObject);
         winButton.onClick.RemoveListener(delegate {mainLevel.GetComponent<GameManager>().winGame();});
         GameSettings.resume = false;

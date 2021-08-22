@@ -27,6 +27,7 @@ public class MenuScript : MonoBehaviour
         levelButtons[1].onClick.AddListener(delegate { selectLevel(1);});
         levelButtons[2].onClick.AddListener(delegate { selectLevel(2);});
         levelButtons[3].onClick.AddListener(delegate { selectLevel(3);});
+        selectLevel(0);
     }
 
     public void selectLevel(int x)
