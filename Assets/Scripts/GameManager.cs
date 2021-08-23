@@ -147,6 +147,12 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < gameImages[i].Count; j++)
             {
                 gameImages[i][j] = initialOrder[gameImageIds[i][j]];
+                
+                if (gameImages[i][j].Sprite.sprite == null)
+                {
+                    emptyFieldX = i;
+                    emptyFieldY = j;
+                }
             }
         }
 
